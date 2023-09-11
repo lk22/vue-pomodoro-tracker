@@ -4,7 +4,7 @@ import { computed, watch } from 'vue'
 
 import { usePomodoroStore } from './store/store';
 const pomodoroState = usePomodoroStore();
-
+  
 type Timer = any | null;
 
 let timer: Timer = null;

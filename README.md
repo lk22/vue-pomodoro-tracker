@@ -21,7 +21,7 @@ npm run dev
 ```
 
 #### Todos for the future
-- add a more nicer layout
-- make the application responsive
-- add a settings page for customizing the timer
-- add a history page for showing the history of the pomodoros
+- [] add a more nicer layout
+- [] make the application responsive
+- [] add a settings page for customizing the timer
+- [] add a history page for showing the history of the pomodoros
