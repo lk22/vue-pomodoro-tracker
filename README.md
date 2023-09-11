@@ -4,10 +4,10 @@ This is a simple approach to a simple pomodoro tracker builded with following te
 
 ### technologies used
 
-- Vue.js [link=https://vuejs.org/]
-- Vite.js [link=https://vitejs.dev/]
-- Pinia (Vue State manager) [link=https://pinia.vuejs.org/]
-- Pinia persisted state [link=https://prazdevs.github.io/pinia-plugin-persistedstate/guide/]
+- Vue.js [https://vuejs.org/]
+- Vite.js [https://vitejs.dev/]
+- Pinia (Vue State manager) [https://pinia.vuejs.org/]
+- Pinia persisted state [https://prazdevs.github.io/pinia-plugin-persistedstate/guide/]
 
 this app contains a simple layout for showing a timer and 3 action buttons for starting, stopping and resetting the timer
 
