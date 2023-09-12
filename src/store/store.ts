@@ -1,13 +1,25 @@
 // import define store from pinia
 import { defineStore } from 'pinia'
 
-type Pomodoro = {
+export type Pomodoro = {
   time: number;
   isRunning: boolean;
   isPaused: boolean;
   isStopped: boolean;
   isReset: boolean;
   isCompleted: boolean;
+  timesCompleted?: number;
+  settings: PomodoroSettings;
+}
+
+type PomodoroSettings = {
+  workTime: number;
+  shortBreakTime: number;
+  longBreakTime: number;
+  longBreakInterval: number;
+  autoStart: boolean;
+  autoStartBreak: boolean;
+  autoStartLongBreak: boolean;
 }
 
 /**
@@ -22,7 +34,17 @@ export const usePomodoroStore = defineStore('pomodoro', {
       isPaused: false,
       isStopped: true,
       isReset: false,
-      isCompleted: false
+      isCompleted: false,
+      timesCompleted: 0,
+      settings: {
+        workTime: 1500,
+        shortBreakTime: 300,
+        longBreakTime: 900,
+        longBreakInterval: 4,
+        autoStart: false,
+        autoStartBreak: false,
+        autoStartLongBreak: false,
+      }
     }
   ),
 
@@ -46,7 +68,7 @@ export const usePomodoroStore = defineStore('pomodoro', {
       this.isPaused = false,
       this.isStopped = false;
       this.isReset = true;
-      this.time = 1500;
+      this.time = this.settings.workTime;
     },
 
     complete() {
@@ -55,6 +77,7 @@ export const usePomodoroStore = defineStore('pomodoro', {
       this.isStopped = true;
       this.isReset = false;
       this.isCompleted = true;
+      this.timesCompleted = this.timesCompleted ? this.timesCompleted + 1 : 1;
     }
   },
 });

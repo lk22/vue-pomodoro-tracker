@@ -97,11 +97,16 @@ button:focus-visible {
 }
 
 .pomodoro-timer__time {
-  font-size: 4rem;
+  font-size: 3rem;
   font-weight: 700;
   color: #f9f9f9;
   margin: 0;
   margin-left: 10px;
+}
+
+.pomodoro-timer__completed {
+  font-size: 1rem;
+  font-weight: lighter;
 }
 
 .pomodoro-timer__buttons {

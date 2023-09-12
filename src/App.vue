@@ -1,6 +1,13 @@
 <script setup lang="ts">
+import { 
+  computed, 
+  watch, 
+  ref
+} from 'vue'
 import AppLayout from './layouts/AppLayout.vue';
-import { computed, watch } from 'vue'
+import SettingsModal from './components/SettingsModal.vue';
+
+const settingsDialogOpened = ref(false);
 
 import { usePomodoroStore } from './store/store';
 const pomodoroState = usePomodoroStore();
@@ -11,6 +18,7 @@ let timer: Timer = null;
 
 const formattedTime = computed(() => {
   let time = pomodoroState.$state.time;
+  console.log(time)
   return Math.floor(time / 60) + ':' + ('0' + time % 60).slice(-2);
 })
 
@@ -51,6 +59,13 @@ const resetPomodoro = () => {
 if ( pomodoroState.$state.isRunning ) {
   startPomodoro();
 }
+/**
+ * Toggling settings dialog component
+ */
+const toggleSettingsModal = () => {
+  settingsDialogOpened.value =! settingsDialogOpened.value;
+}
+
 </script>
 
 <template>
@@ -58,7 +73,12 @@ if ( pomodoroState.$state.isRunning ) {
     <div class="container">
     <div class="row">
       <div class="pomodoro-timer__title">
-        <h1>Pomodoro tracker</h1>
+          <h1>Pomodoro tracker</h1>
+          <button class="open-settings-dialog" @click="toggleSettingsModal()">
+            Settings
+          </button>
+        <br>
+        <br>
       </div>
     </div>
     <div class="row">
@@ -68,8 +88,14 @@ if ( pomodoroState.$state.isRunning ) {
           <button class="pomodoro-timer__button pomodoro-timer__button--stop" @click="stopPomodoro(formattedTime)">Stop</button>
           <button class="pomodoro-timer__button pomodoro-timer__button--reset" @click="resetPomodoro()">Reset</button>
         </div>
-        <div class="pomodoro-timer__time">{{ formattedTime }}</div>
+        <div class="pomodoro-timer__time">
+          {{ formattedTime }}
+          <div class="pomodoro-timer__completed">completed {{ pomodoroState.$state.timesCompleted }} times</div>
+        </div>
       </div>
+    </div>
+    <div class="row">
+      <SettingsModal v-on:close-settings-dialog="toggleSettingsModal()" :isOpened="settingsDialogOpened" />
     </div>
   </div>
   </AppLayout>
