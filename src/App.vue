@@ -19,6 +19,7 @@ watch(formattedTime, (time) => {
   if ( time === '0:00' ) {
     clearInterval(timer);
     pomodoroState.complete();
+    pomodoroState.reset();
   }
 })
 
