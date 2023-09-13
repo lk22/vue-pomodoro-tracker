@@ -18,7 +18,6 @@ let timer: Timer = null;
 
 const formattedTime = computed(() => {
   let time = pomodoroState.$state.time;
-  console.log(time)
   return Math.floor(time / 60) + ':' + ('0' + time % 60).slice(-2);
 })
 
@@ -27,7 +26,12 @@ watch(formattedTime, (time) => {
   if ( time === '0:00' ) {
     clearInterval(timer);
     pomodoroState.complete();
-    pomodoroState.reset();
+    console.log("Timer completed");
+    
+    // if the auto start setting is enabled, start the timer again
+    if ( pomodoroState.$state.settings.autoStart ) {
+      startPomodoro();
+    }
   }
 })
 
@@ -35,9 +39,13 @@ const startPomodoro = () => {
   timer = setInterval(() => {
     pomodoroState.$state.time--;
   }, 1000);
+
+  console.log("Timer started")
   
   if ( pomodoroState.$state.time === 0 ) {
-    clearInterval(timer);
+    if ( ! pomodoroState.$state.settings.autoStart ) {
+      clearInterval(timer);
+    }
     pomodoroState.complete();
   }
 }
@@ -90,7 +98,7 @@ const toggleSettingsModal = () => {
         </div>
         <div class="pomodoro-timer__time">
           {{ formattedTime }}
-          <div class="pomodoro-timer__completed">completed {{ pomodoroState.$state.timesCompleted }} times</div>
+          <div class="pomodoro-timer__completed">{{ pomodoroState.$state.timesCompleted }} Pomodoro's completed</div>
         </div>
       </div>
     </div>

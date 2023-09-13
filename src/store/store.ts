@@ -8,7 +8,11 @@ export type Pomodoro = {
   isStopped: boolean;
   isReset: boolean;
   isCompleted: boolean;
-  timesCompleted?: number;
+  timesCompleted: number;
+  breakComplete: boolean;
+  shortBreakInitiated: boolean;
+  longBreakInitiated: boolean;
+  breakCompleted: boolean;
   settings: PomodoroSettings;
 }
 
@@ -36,12 +40,16 @@ export const usePomodoroStore = defineStore('pomodoro', {
       isReset: false,
       isCompleted: false,
       timesCompleted: 0,
+      breakComplete: false,
+      shortBreakInitiated: false,
+      longBreakInitiated: false,
+      breakCompleted: false,
       settings: {
         workTime: 1500,
         shortBreakTime: 300,
         longBreakTime: 900,
         longBreakInterval: 4,
-        autoStart: false,
+        autoStart: true,
         autoStartBreak: false,
         autoStartLongBreak: false,
       }
@@ -77,7 +85,32 @@ export const usePomodoroStore = defineStore('pomodoro', {
       this.isStopped = true;
       this.isReset = false;
       this.isCompleted = true;
-      this.timesCompleted = this.timesCompleted ? this.timesCompleted + 1 : 1;
+      console.log(this.timesCompleted);
+      console.log("short break initiated: " + this.shortBreakInitiated);
+      console.log("long break initiated: " + this.longBreakInitiated);
+      console.log("interval" + this.settings.longBreakInterval);
+      
+      if ( ! this.shortBreakInitiated && this.timesCompleted < this.settings.longBreakInterval) {
+          this.timesCompleted = this.timesCompleted ? this.timesCompleted + 1 : 1; // only increment if break is not initiated
+          this.shortBreakInitiated = true;
+          console.log("short break initiated");
+          this.time = this.settings.shortBreakTime;
+      } else if ( ! this.longBreakInitiated && this.timesCompleted === this.settings.longBreakInterval ) {
+        this.timesCompleted = this.timesCompleted ? this.timesCompleted + 1 : 1; // only increment if break is not initiated
+        console.log("long break initiated");
+        this.time = this.settings.longBreakTime;
+        this.shortBreakInitiated = false;
+        this.longBreakInitiated = true;
+        this.settings.longBreakInterval += this.settings.longBreakInterval; // increment the long break interval
+        console.log("new interval: " + this.settings.longBreakInterval);
+      } else {
+        console.log("break completed");
+        this.breakCompleted = true;
+        this.shortBreakInitiated = false;
+        this.longBreakInitiated = false;
+        this.time = this.settings.workTime;
+      }
     }
   },
+  persist: false
 });
