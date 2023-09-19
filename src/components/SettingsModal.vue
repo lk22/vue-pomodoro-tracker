@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import {ref} from 'vue'
+  import {ref, watch} from 'vue'
   import { usePomodoroStore } from '../store/store';
   
   type DialogProps = {
@@ -20,6 +20,11 @@
   const workTime = ref(Math.floor(store.$state.settings.workTime / 60));
   const shortBreakDuration = ref(store.$state.settings.shortBreakTime / 60);
   const longBreakDuration = ref(store.$state.settings.longBreakTime / 60);
+  const autoStart = ref(store.$state.settings.autoStart);
+
+  watch(autoStart, (value) => {
+    console.log("auto start: changed to: " + value)
+  })
 
   /**
    * Updating pomodoro settings
@@ -78,6 +83,16 @@
               name="long-break-interval" 
               v-model="store.$state.settings.longBreakInterval"
             />
+          </div>
+          <div class="form-group">
+            <label for="pomodorodo-auto-start">Auto start new pomodoro</label>
+            <input 
+              type="checkbox" 
+              id="pomodorodo-auto-start" 
+              name="pomodorodo-auto-start" 
+              v-model="store.$state.settings.autoStart"
+              @checked="store.$state.settings.autoStart = true"
+            >
           </div>
         </form>
       </div>
@@ -152,6 +167,12 @@
 
   .form-group label {
     margin-bottom: 0.5rem;
+  }
+
+  .form-group input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    text-align: left;
   }
 
   form input {

@@ -67,6 +67,7 @@ const resetPomodoro = () => {
 if ( pomodoroState.$state.isRunning ) {
   startPomodoro();
 }
+
 /**
  * Toggling settings dialog component
  */
