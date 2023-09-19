@@ -121,5 +121,5 @@ export const usePomodoroStore = defineStore('pomodoro', {
       }
     }
   },
-  persist: false
+  // persist: false
 });
